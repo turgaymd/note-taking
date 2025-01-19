@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Notes from "./notes";
 export default function Home() {
 
