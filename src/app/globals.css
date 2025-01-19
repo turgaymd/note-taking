@@ -16,6 +16,51 @@
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: bisque;
   font-family: Arial, Helvetica, sans-serif;
+}
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.nextjs-static-indicator-toast-wrapper{
+  display: none !important;
+}
+.card{
+  background: beige;
+  min-height: 10rem;
+  color: #333333;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+.card button{
+  width: 33px;
+  height: 33px;
+  color: rosybrown;
+  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); */
+  border-radius: 10px;
+  /* background-color:royalblue; */
+}
+input, textarea{
+  color: #6B7280;
+  background: none;
+  outline: none;
+}
+.focused{
+  background: white;
+  border-color: white;
+
+}
+.add button{
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-color: rosybrown;
+}
+.add svg{
+  font-size: 2rem !important;
+}
+textarea{
+  resize: none;
 }
