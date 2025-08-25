@@ -1,19 +1,16 @@
 'use client';
 import { useEffect, useState } from "react";
+import axios from "axios";
 import React from "react";
 import Note from "./note";
-import {Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure} from "@nextui-org/modal"
+import {Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextui-org/modal"
 import AddIcon from '@mui/icons-material/Add';
+
 const Notes=()=>{
-    const [name, setName]=useState('')
+    const [title, setTitle]=useState('')
     const [note, setNote]=useState('')
-    const [open, setOpen]=useState(false)
     const {isOpen, onOpen, onOpenChange, onClose}=useDisclosure()
-    const [notes, setNotes]=React.useState([{
-    id:Date.now(),
-    text:'Note',
-    description:'Add, some notes'
-    }])
+    const [notes, setNotes]=React.useState([]);
 
   useEffect(()=>{
     // localStorage.removeItem('notes')
@@ -24,40 +21,49 @@ const Notes=()=>{
     }   
 }, [])
     useEffect(()=>{
+        const getNotes=async()=>{
+          const results=await axios.get('http://localhost:5000/api/')
+        setNotes(results.data)
+        }
+        getNotes()
+      
         localStorage.setItem('notes',JSON.stringify(notes))
-       
        },[notes])
 
-    const handleForm=(e:any)=>{
+    const handleForm=async (e:any)=>{
         e.preventDefault();
-
-        const newNote={
-            id:Date.now(),
-            text:name, 
-            description:note
-        }
         
-        if(name.trim()){    
-            setNotes([...notes, newNote])      
-            setName('')
+        try{
+const results= await axios.post('http://localhost:5000/api/notes/', {title:title, description:note},  {
+    headers:{
+        'Content-Type':'application/json',
+    }
+})
+    if(title.trim()){    
+            setNotes([...notes, results.data])      
+            setTitle('')
             setNote('')
             onClose()
         }
-       
-    
+        }
+        catch(err){
+           console.log(err)
+        }
     }
-    
- 
     return(
         <div>
-            
-        <Note  name={name} setName={setName} note={note} notes={notes} setNotes={setNotes} setNote={setNote}/>
+                  <div className="text-center add">
+                   <button type="submit" className="outline-none text-white" onClick={onOpen}>
+                    <AddIcon/>
+                   </button>
+                   </div>
+             
+        <Note  title={title} setTitle={setTitle} note={note} notes={notes} setNotes={setNotes} setNote={setNote}/>
 
         <div className="pt-8 text-center flex justify-center align-center" >
             
              <Modal isOpen={isOpen} onOpenChange={onOpenChange}>                    
-                    <ModalContent>
-                       
+                    <ModalContent>                      
                                    <ModalHeader>
                             Create Note
                         </ModalHeader>
@@ -65,7 +71,7 @@ const Notes=()=>{
 
                     <form  onSubmit={handleForm} className="flex flex-col gap-4  ">
                             <label>
-                              <input type="text" className="w-full outline-none rounded bg-gray-100 py-2 px-3" placeholder="Title"  value={name} onChange={(e)=>setName(e.target.value)}></input>
+                              <input type="text" className="w-full outline-none rounded bg-gray-100 py-2 px-3" placeholder="Title"  value={title} onChange={(e)=>setTitle(e.target.value)}></input>
                             </label>
                             <label>
                                 <textarea cols={9} rows={5} placeholder="Take a note"  className="bg-gray-100 outline-none rounded px-4 py-2 w-full" value={note} onChange={(e)=>setNote(e.target.value)}/>
@@ -86,11 +92,7 @@ const Notes=()=>{
                     </Modal>
 
         </div>
-                   <div className="text-center add">
-                   <button type="submit" className="outline-none text-white" onClick={onOpen}>
-                    <AddIcon/>
-                   </button>
-                   </div>
+                
 
 </div>     
      
