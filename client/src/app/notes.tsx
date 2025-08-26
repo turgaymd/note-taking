@@ -18,7 +18,7 @@ const Notes=()=>{
     const [note, setNote]=useState<string>("") || null
     const {isOpen, onOpen, onOpenChange, onClose}=useDisclosure()
     const [notes, setNotes]=useState<NoteType[]>([]);
-     const apiUrl=useContext(ApiContext)
+    const {apiUrl}=useContext(ApiContext)
   useEffect(()=>{
     // localStorage.removeItem('notes')
     const data=localStorage.getItem('notes');

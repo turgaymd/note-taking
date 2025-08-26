@@ -28,7 +28,7 @@ const Note=({note, title, setNote, setTitle, notes,  setNotes}: NoteProps)=>{
     const [readOnly, setReadOnly]=useState(true)
     const inputRef=useRef<HTMLInputElement | null>(null);
     const textareaRef=useRef<HTMLTextAreaElement | null>(null);
-     const apiUrl=useContext(ApiContext)
+    const {apiUrl}=useContext(ApiContext)
 
     const handleDelete=async (id:number)=>{
       console.log(id)
@@ -51,7 +51,7 @@ const Note=({note, title, setNote, setTitle, notes,  setNotes}: NoteProps)=>{
  }
  
  const handleSave=async(id:number, title:string, description:string,)=>{
-    await axios.put(`http://localhost:5000/api/notes/${id}`,{
+    await axios.put(`${apiUrl}/api/notes/${id}`,{
     title,
     description
   },
