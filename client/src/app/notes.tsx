@@ -1,10 +1,11 @@
 'use client';
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import React from "react";
 import {Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextui-org/modal"
 import AddIcon from '@mui/icons-material/Add';
 import Note from "./note";
+import { ApiContext } from "../../ApiContext";
 export type NoteType={
   _id:number
   title:string,
@@ -17,7 +18,7 @@ const Notes=()=>{
     const [note, setNote]=useState<string>("") || null
     const {isOpen, onOpen, onOpenChange, onClose}=useDisclosure()
     const [notes, setNotes]=useState<NoteType[]>([]);
-
+     const apiUrl=useContext(ApiContext)
   useEffect(()=>{
     // localStorage.removeItem('notes')
     const data=localStorage.getItem('notes');
@@ -28,7 +29,7 @@ const Notes=()=>{
 }, [])
     useEffect(()=>{
         const getNotes=async()=>{
-          const results=await axios.get('http://localhost:5000/api/')
+          const results=await axios.get(`${apiUrl}/api/`)
         setNotes(results.data)
         }
         getNotes()
@@ -40,7 +41,7 @@ const Notes=()=>{
         e.preventDefault();
         
         try{
-const results= await axios.post('http://localhost:5000/api/notes/', {title:title, description:note},  {
+const results= await axios.post(`${apiUrl}/api/notes/`, {title:title, description:note},  {
     headers:{
         'Content-Type':'application/json',
     }

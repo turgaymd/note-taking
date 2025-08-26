@@ -1,5 +1,7 @@
 'use client';
 import React, { useRef, useState } from "react";
+import { useContext } from "react";
+import { ApiContext } from "../../ApiContext";
 // import EditIcon from '@mui/icons-material/Edit'; 
 // import DeleteIcon from '@mui/icons-material/Delete'; 
 // import SaveIcon from '@mui/icons-material/Save'; 
@@ -26,11 +28,11 @@ const Note=({note, title, setNote, setTitle, notes,  setNotes}: NoteProps)=>{
     const [readOnly, setReadOnly]=useState(true)
     const inputRef=useRef<HTMLInputElement | null>(null);
     const textareaRef=useRef<HTMLTextAreaElement | null>(null);
-
+     const apiUrl=useContext(ApiContext)
 
     const handleDelete=async (id:number)=>{
       console.log(id)
-      await axios.delete(`http://localhost:5000/api/notes/${id}`, {
+      await axios.delete(`${apiUrl}/api/notes/${id}`, {
         headers:{
           'Content-Type':"application/json"
         }
