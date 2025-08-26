@@ -1,7 +1,6 @@
 const express=require('express');
 const noteRouter=express.Router();
 const Note=require('../noteModel');
-const { ESLINT_DEFAULT_DIRS } = require('next/dist/lib/constants');
 noteRouter.get('/',async (req,res)=>{
    const notes=await Note.find({})
    res.json(notes)
