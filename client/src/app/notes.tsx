@@ -46,7 +46,7 @@ const results= await axios.post('http://localhost:5000/api/notes/', {title:title
     }
 })
     if(title.trim()){    
-            setNotes([...notes, results.data])      
+            setNotes([...notes, results.data] as NoteType[])      
             setTitle('')
             setNote('')
             onClose()
