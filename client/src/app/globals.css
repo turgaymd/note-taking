@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  color: var(--foreground);
+  background: bisque;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.nextjs-static-indicator-toast-wrapper{
+  display: none !important;
+}
+header{
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+.search-icon{
+  bottom:1rem;
+  right:1rem;
+}
+.card{
+  background: beige;
+  min-height: 10rem;
+  padding: 20px 25px;
+  color: #333333;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+.card:hover{
+  background:#f0864a;
+  color: white !important;
+  cursor: pointer;
+}
+.card button{
+  width: 33px;
+  height: 33px;
+  border-radius: 10px;
+}
+input, textarea{
+  background: none;
+  text-transform: capitalize;
+  outline: none;
+}
+.focused{
+  background: white;
+  border-color: white;
+
+}
+/* .search-icon{
+  color: #ededed;
+} */
+.add {
+  position: fixed;
+  bottom: 4rem;
+  right: 3rem;
+  z-index: 1;
+}
+.add button{
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-color: rosybrown;
+}
+.add svg{
+  font-size: 2rem !important;
+}
+textarea{
+  resize: none;
+}
+.dropdown{
+  position: relative;
+}
+.dropdown-menu{
+position: absolute;
+min-width: 200px;
+background: whitesmoke;
+color: black;
+padding: 20px;
+border-radius: 10px;
+display: none;
+}
+.dropdown:hover .dropdown-menu{
+  display: flex;
+  flex-direction: column;
+}
