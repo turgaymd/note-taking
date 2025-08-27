@@ -6,36 +6,32 @@ import {Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextu
 import AddIcon from '@mui/icons-material/Add';
 import Note from "./note";
 import { ApiContext } from "../../ApiContext";
-export type NoteType={
-  _id:number
-  title:string,
-  description:string,
-  createdAt:string
+import { NoteType } from "./note";
+import { NoteContext } from "../../NoteContext";
 
-}
+// type NoteProps={
+//   note:string,
+//   setNote:React.Dispatch<React.SetStateAction<string>>,
+//   setTitle:React.Dispatch<React.SetStateAction<string>>,
+//   notes:NoteType[],
+//   setNotes:React.Dispatch<React.SetStateAction<NoteType[]>>
+//   title:string
+// }
 const Notes=()=>{
     const [title, setTitle]=useState<string>("") || null
     const [note, setNote]=useState<string>("") || null
     const {isOpen, onOpen, onOpenChange, onClose}=useDisclosure()
-    const [notes, setNotes]=useState<NoteType[]>([]);
+    const {notes,setNotes}=useContext(NoteContext)
     const {apiUrl}=useContext(ApiContext)
-  useEffect(()=>{
-    // localStorage.removeItem('notes')
-    const data=localStorage.getItem('notes');
-    if(data){
-        const response= JSON.parse(data) 
-        setNotes(response)
-    }   
-}, [])
+
     useEffect(()=>{
         const getNotes=async()=>{
-          const results=await axios.get(`${apiUrl}/api/`)
+          const results=await axios.get(`${apiUrl}/api`)
         setNotes(results.data)
         }
         getNotes()
       
-        localStorage.setItem('notes',JSON.stringify(notes))
-       },[notes])
+       },[])
 
     const handleForm=async (e:React.FormEvent)=>{
         e.preventDefault();

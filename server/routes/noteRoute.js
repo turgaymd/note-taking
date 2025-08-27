@@ -5,6 +5,19 @@ noteRouter.get('/',async (req,res)=>{
    const notes=await Note.find({})
    res.json(notes)
 })
+noteRouter.get('/search', async(req,res)=>{
+const keyword=req.query.keyword ?{
+   
+   $or:[
+    {title:{$regex:req.query.keyword, $options:'i' }},
+    {description:{$regex:req.query.keyword,$options:'i'}}
+   ]
+ 
+ 
+}:{}
+const filteredNotes=await Note.find({...keyword})
+res.json(filteredNotes)
+})
 noteRouter.post('/notes', async(req,res)=>{
          const {title, description}=req.body
     const note=await Note.create({
