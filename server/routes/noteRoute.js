@@ -15,7 +15,7 @@ const keyword=req.query.keyword ?{
  
  
 }:{}
-const filteredNotes=await Note.find({...keyword})
+const filteredNotes=await Note.find({...keyword}).sort({createdAt:-1})
 res.json(filteredNotes)
 })
 noteRouter.post('/notes', async(req,res)=>{

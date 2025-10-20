@@ -6,7 +6,6 @@ import {Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextu
 import AddIcon from '@mui/icons-material/Add';
 import Note from "./note";
 import { ApiContext } from "../../ApiContext";
-import { NoteType } from "./note";
 import { NoteContext } from "../../NoteContext";
 
 // type NoteProps={
@@ -18,8 +17,8 @@ import { NoteContext } from "../../NoteContext";
 //   title:string
 // }
 const Notes=()=>{
-    const [title, setTitle]=useState<string>("") || null
-    const [note, setNote]=useState<string>("") || null
+    const [title, setTitle]=useState<string>("") 
+    const [note, setNote]=useState<string>("")
     const {isOpen, onOpen, onOpenChange, onClose}=useDisclosure()
     const {notes,setNotes}=useContext(NoteContext)
     const {apiUrl}=useContext(ApiContext)
@@ -31,10 +30,11 @@ const Notes=()=>{
         }
         getNotes()
       
-       },[])
+       },[apiUrl,setNotes])
 
     const handleForm=async (e:React.FormEvent)=>{
         e.preventDefault();
+        if (!title.trim()) return;
         
         try{
 const results= await axios.post(`${apiUrl}/api/notes/`, {title:title, description:note},  {
@@ -43,7 +43,7 @@ const results= await axios.post(`${apiUrl}/api/notes/`, {title:title, descriptio
     }
 })
     if(title.trim()){    
-            setNotes([...notes, results.data] as NoteType[])      
+            setNotes([...notes, results.data])      
             setTitle('')
             setNote('')
             onClose()

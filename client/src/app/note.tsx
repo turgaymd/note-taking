@@ -2,12 +2,13 @@
 import React, { useRef, useState } from "react";
 import { useContext } from "react";
 import { ApiContext } from "../../ApiContext";
+import {Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextui-org/modal"
 // import EditIcon from '@mui/icons-material/Edit'; 
 // import DeleteIcon from '@mui/icons-material/Delete'; 
 // import SaveIcon from '@mui/icons-material/Save'; 
 import axios from "axios"
 export type NoteType={
-  _id:number
+  _id:string,
   title:string,
   description:string,
   createdAt:string
@@ -24,13 +25,13 @@ type NoteProps={
 }
 const Note=({note, title, setNote, setTitle, notes,  setNotes}: NoteProps)=>{
 
-    const [edited, setEdited] = useState<number | null>(null);
-    const [readOnly, setReadOnly]=useState(true)
+    const [edited, setEdited] = useState<string | null>(null);
+    const {isOpen, onOpen, onOpenChange, onClose}=useDisclosure()
     const inputRef=useRef<HTMLInputElement | null>(null);
     const textareaRef=useRef<HTMLTextAreaElement | null>(null);
     const {apiUrl}=useContext(ApiContext)
 
-    const handleDelete=async (id:number)=>{
+    const handleDelete=async (id:string)=>{
       console.log(id)
       await axios.delete(`${apiUrl}/api/notes/${id}`, {
         headers:{
@@ -40,17 +41,18 @@ const Note=({note, title, setNote, setTitle, notes,  setNotes}: NoteProps)=>{
         setNotes(notes.filter((note:NoteType)=>note._id!==id))
  }
 
- const handleEdit=async(id:number, title:string, description:string)=>{
-      setReadOnly(false)
+ const handleEdit=async(id:string, title:string, description:string)=>{
     setEdited(id)
     setTitle(title)
     setNote(description)
     setTimeout(()=>{
     textareaRef.current?.focus()
        })
+           onOpen()
  }
  
- const handleSave=async(id:number, title:string, description:string,)=>{
+ const handleSave=async(id:string, title:string, description:string)=>{
+
     await axios.put(`${apiUrl}/api/notes/${id}`,{
     title,
     description
@@ -61,14 +63,12 @@ const Note=({note, title, setNote, setTitle, notes,  setNotes}: NoteProps)=>{
   }
 }
 )
-   setReadOnly(true)
       setNotes(
       notes.map((item:NoteType)=>item._id===id ? { ...item, title,description}   : item ))
       setEdited(null)
       setTitle('')
       setNote('')
-     
-     
+      onClose()
  }
 
     return(
@@ -76,30 +76,40 @@ const Note=({note, title, setNote, setTitle, notes,  setNotes}: NoteProps)=>{
         { notes.map((item:NoteType)=>{
             return (
                 <div className="card flex flex-col flex-wrap rounded shadow-lg py-2 px-4 gap-2" key={item._id}>
-        <div className="flex ">
-          <div>
+                   <Modal isOpen={isOpen} onOpenChange={onOpenChange}>                    
+                    <ModalContent>                      
+                                   <ModalHeader>
+                            Edit Note
+                        </ModalHeader>
+                    <ModalBody>
+                    <form className="flex flex-col gap-4">
+                            <label>
+                              <input type="text" className="w-full outline-none rounded bg-gray-100 py-2 px-3" placeholder={title}  value={title} onChange={(e)=>setTitle(e.target.value)}></input>
+                            </label>
+                            <label>
+                                <textarea cols={9} rows={5} placeholder="Take a note"  className="bg-gray-100 outline-none rounded px-4 py-2 w-full" value={note} onChange={(e)=>setNote(e.target.value)}/>
+                            </label>
+                            <div className="text-center pb-5"> 
+                                 <button type="submit" className="bg-blue-500 rounded outline-none py-2 px-8 text-white" onClick={()=>handleSave(edited!,title,note)}>Update</button>
+                                 </div>
+                           </form>
+                    </ModalBody>
+                        </ModalContent>
+                                        </Modal>
+                         <div className="flex ">
+            <div>
           <label htmlFor="title"></label>
-            <input className="font-bold pt-2 text-xl"  type="text"  ref={edited===item._id ? inputRef : null} defaultValue={item.title}  readOnly={readOnly}   onChange={(e)=>setTitle(e.target.value)} placeholder="title"/>
+            <input className="font-bold pt-2 text-xl"  type="text"  ref={edited===item._id ? inputRef : null} defaultValue={item.title}  readOnly={edited!==item._id}   onChange={(e)=>setTitle(e.target.value)} placeholder="title"/>
             </div>
-  
-          <div className="dropdown">
+              <div className="dropdown">
             <button className="dropdown-btn">...</button>
             <div className="dropdown-menu">
-               { 
-        edited===item._id ?  <button  onClick={()=>handleSave(edited,title,note
-          
-          )}>
-Save
-        </button> :
+             
   <button onClick={()=>handleEdit(item._id, item.title, item.description)}> Edit</button>
-      }
-         
-        <button onClick={()=>handleDelete(item._id)}> Delete </button>
-           
+  <button onClick={()=>handleDelete(item._id)}> Delete </button>
           </div>
             </div>
-         
-        </div>
+            </div>
          <label htmlFor="desc"></label>
             <textarea id='desc'  ref={edited===item._id ? textareaRef : null}  defaultValue={item.description} readOnly={edited!==item._id} onChange={(e)=>setNote(e.target.value)} placeholder="note"/>
         <div className="flex justify-between items-center mt-8">
@@ -110,14 +120,15 @@ Save
             day:"2-digit"
           })}
           </p></div>
+          </div>
+        </div>
       
-
-        </div>
-        </div>
             )
           })
         }
+       
         </div>
+        
 
     )
 }
