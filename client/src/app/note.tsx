@@ -77,12 +77,17 @@ const handleSubmit=(e:React.FormEvent)=>{
   }
  
 }
+const handleClose=()=>{
+  setEdited(null)
+  setTitle('')
+  setNote('')
+}
     return(
          <div className="flex justify-center gap-4 flex-wrap pt-4 mt-4">
         { notes.map((item:NoteType)=>{
             return (
                 <div className="card flex flex-col flex-wrap rounded shadow-lg py-2 px-4 gap-2" key={item._id}>
-                   <Modal isOpen={isOpen} onOpenChange={onOpenChange}>                    
+                   <Modal isOpen={isOpen} onOpenChange={onOpenChange} onClose={handleClose}>                    
                     <ModalContent>                      
                                    <ModalHeader>
                             Edit Note
