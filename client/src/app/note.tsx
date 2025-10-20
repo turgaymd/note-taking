@@ -70,7 +70,13 @@ const Note=({note, title, setNote, setTitle, notes,  setNotes}: NoteProps)=>{
       setNote('')
       onClose()
  }
-
+const handleSubmit=(e:React.FormEvent)=>{
+  e.preventDefault()
+  if (edited){
+ handleSave(edited!,title,note)
+  }
+ 
+}
     return(
          <div className="flex justify-center gap-4 flex-wrap pt-4 mt-4">
         { notes.map((item:NoteType)=>{
@@ -82,7 +88,7 @@ const Note=({note, title, setNote, setTitle, notes,  setNotes}: NoteProps)=>{
                             Edit Note
                         </ModalHeader>
                     <ModalBody>
-                    <form className="flex flex-col gap-4">
+                    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                             <label>
                               <input type="text" className="w-full outline-none rounded bg-gray-100 py-2 px-3" placeholder={title}  value={title} onChange={(e)=>setTitle(e.target.value)}></input>
                             </label>
@@ -90,7 +96,7 @@ const Note=({note, title, setNote, setTitle, notes,  setNotes}: NoteProps)=>{
                                 <textarea cols={9} rows={5} placeholder="Take a note"  className="bg-gray-100 outline-none rounded px-4 py-2 w-full" value={note} onChange={(e)=>setNote(e.target.value)}/>
                             </label>
                             <div className="text-center pb-5"> 
-                                 <button type="submit" className="bg-blue-500 rounded outline-none py-2 px-8 text-white" onClick={()=>handleSave(edited!,title,note)}>Update</button>
+                                 <button type="submit" className="bg-blue-500 rounded outline-none py-2 px-8 text-white">Update</button>
                                  </div>
                            </form>
                     </ModalBody>
@@ -99,7 +105,7 @@ const Note=({note, title, setNote, setTitle, notes,  setNotes}: NoteProps)=>{
                          <div className="flex ">
             <div>
           <label htmlFor="title"></label>
-            <input className="font-bold pt-2 text-xl"  type="text"  ref={edited===item._id ? inputRef : null} defaultValue={item.title}  readOnly={edited!==item._id}   onChange={(e)=>setTitle(e.target.value)} placeholder="title"/>
+            <input className="font-bold pt-2 text-xl"  type="text"  ref={edited===item._id ? inputRef : null} value={item.title}  readOnly={edited!==item._id}   onChange={(e)=>setTitle(e.target.value)} placeholder="title"/>
             </div>
               <div className="dropdown">
             <button className="dropdown-btn">...</button>
@@ -111,7 +117,7 @@ const Note=({note, title, setNote, setTitle, notes,  setNotes}: NoteProps)=>{
             </div>
             </div>
          <label htmlFor="desc"></label>
-            <textarea id='desc'  ref={edited===item._id ? textareaRef : null}  defaultValue={item.description} readOnly={edited!==item._id} onChange={(e)=>setNote(e.target.value)} placeholder="note"/>
+            <textarea id='desc'  ref={edited===item._id ? textareaRef : null}  value={item.description} readOnly={edited!==item._id} onChange={(e)=>setNote(e.target.value)} placeholder="note"/>
         <div className="flex justify-between items-center mt-8">
         <div><p>
           {new Date(item.createdAt).toLocaleDateString('en-Us', {
