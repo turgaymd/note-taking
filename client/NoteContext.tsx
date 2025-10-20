@@ -10,7 +10,7 @@ export const NoteContext=createContext<NoteContextType>({
     setNotes:()=>{}
 });
 export type NoteType={
-  _id:number
+  _id:string,
   title:string,
   description:string,
   createdAt:string
