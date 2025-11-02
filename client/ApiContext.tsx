@@ -7,7 +7,7 @@ type ApiContextType={
 export const ApiContext=createContext<ApiContextType>({
     apiUrl:''
 })
-const apiUrl=process.env.NODE_ENV==='production' ? 'https://note-taking-igzm.onrender.com' : 'http://localhost:5000'
+const apiUrl=process.env.NODE_ENV==='production' ? 'https://note-takingserver.vercel.app' : 'http://localhost:5000'
 type ApiProviderProps={
     children:React.ReactNode
 }

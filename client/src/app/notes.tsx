@@ -85,9 +85,6 @@ const results= await axios.post(`${apiUrl}/api/notes/`, {title:title, descriptio
                            </form>
 
                     </ModalBody>
-                         
-                         
-                 
                     {/* <ModalFooter>
                     <button className="" onClick={()=>setOpen(false)}>Close</button>
                     </ModalFooter> */}
