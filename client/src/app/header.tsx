@@ -24,7 +24,7 @@ const Header=()=>{
          <div>
       <form className="flex-1 relative" onSubmit={handleSearch}>
         <div className='search-box'>
- <input type="text" placeholder="search notes..." className=" rounded-lg text-2xl border border-gray-300 px-3 py-2"/>
+ <input type="text" placeholder="search notes..." className=" rounded-lg border border-gray-300 px-3 py-2"/>
         </div>
            <button className='search-icon absolute text-gray-500' aria-label="search"> <SearchIcon /></button>
       

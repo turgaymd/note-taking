@@ -7,15 +7,6 @@ import AddIcon from '@mui/icons-material/Add';
 import Note from "./note";
 import { ApiContext } from "../../ApiContext";
 import { NoteContext } from "../../NoteContext";
-
-// type NoteProps={
-//   note:string,
-//   setNote:React.Dispatch<React.SetStateAction<string>>,
-//   setTitle:React.Dispatch<React.SetStateAction<string>>,
-//   notes:NoteType[],
-//   setNotes:React.Dispatch<React.SetStateAction<NoteType[]>>
-//   title:string
-// }
 const Notes=()=>{
     const [title, setTitle]=useState<string>("") 
     const [note, setNote]=useState<string>("")
@@ -63,7 +54,7 @@ const results= await axios.post(`${apiUrl}/api/notes/`, {title:title, descriptio
              
         <Note  title={title} setTitle={setTitle} note={note} notes={notes} setNotes={setNotes} setNote={setNote}/>
 
-        <div className="pt-8 text-center flex justify-center align-center" >
+        <div className="pt-8 text-center flex justify-center" >
             
              <Modal isOpen={isOpen} onOpenChange={onOpenChange}>                    
                     <ModalContent>                      
@@ -85,9 +76,6 @@ const results= await axios.post(`${apiUrl}/api/notes/`, {title:title, descriptio
                            </form>
 
                     </ModalBody>
-                    {/* <ModalFooter>
-                    <button className="" onClick={()=>setOpen(false)}>Close</button>
-                    </ModalFooter> */}
                     </ModalContent>
                     </Modal>
 
