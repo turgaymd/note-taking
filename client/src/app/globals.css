@@ -49,7 +49,6 @@ header{
   cursor: pointer;
 }
 .card button{
-  width: 33px;
   height: 33px;
   border-radius: 10px;
 }
@@ -89,14 +88,10 @@ textarea{
 }
 .dropdown-menu{
 position: absolute;
-min-width: 200px;
+min-width: 160px;
+right: 0;
 background: whitesmoke;
 color: black;
 padding: 20px;
 border-radius: 10px;
-display: none;
-}
-.dropdown:hover .dropdown-menu{
-  display: flex;
-  flex-direction: column;
 }

@@ -3,9 +3,7 @@ import React, { useRef, useState } from "react";
 import { useContext } from "react";
 import { ApiContext } from "../../ApiContext";
 import {Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextui-org/modal"
-// import EditIcon from '@mui/icons-material/Edit'; 
-// import DeleteIcon from '@mui/icons-material/Delete'; 
-// import SaveIcon from '@mui/icons-material/Save'; 
+import { CiEdit, CiTrash } from "react-icons/ci";
 import axios from "axios"
 export type NoteType={
   _id:string,
@@ -26,6 +24,7 @@ type NoteProps={
 const Note=({note, title, setNote, setTitle, notes,  setNotes}: NoteProps)=>{
 
     const [edited, setEdited] = useState<string | null>(null);
+    const [opendDropdown, setOpenDropdown]=useState<string | null>(null);
     const {isOpen, onOpen, onOpenChange, onClose}=useDisclosure()
     const inputRef=useRef<HTMLInputElement | null>(null);
     const textareaRef=useRef<HTMLTextAreaElement | null>(null);
@@ -86,7 +85,7 @@ const handleClose=()=>{
          <div className="flex justify-center gap-4 flex-wrap pt-4 mt-4">
         { notes.map((item:NoteType)=>{
             return (
-                <div className="card flex flex-col flex-wrap rounded shadow-lg py-2 px-4 gap-2" key={item._id}>
+                <div className="card flex flex-col flex-wrap rounded shadow-lg py-2 px-4 gap-2" key={item._id} >
                    <Modal isOpen={isOpen} onOpenChange={onOpenChange} onClose={handleClose}>                    
                     <ModalContent>                      
                                    <ModalHeader>
@@ -113,12 +112,25 @@ const handleClose=()=>{
             <input className="font-bold pt-2 text-xl"  type="text"  ref={edited===item._id ? inputRef : null} value={item.title}  readOnly={edited!==item._id}   onChange={(e)=>setTitle(e.target.value)} placeholder="title"/>
             </div>
               <div className="dropdown">
-            <button className="dropdown-btn">...</button>
-            <div className="dropdown-menu">
+            <button className="dropdown-btn" onClick={()=>setOpenDropdown(opendDropdown===item._id ? null : item._id)}>...</button>
+
+            {
+              opendDropdown===item._id && (<div className="dropdown-menu">
              
-  <button onClick={()=>handleEdit(item._id, item.title, item.description)}> Edit</button>
-  <button onClick={()=>handleDelete(item._id)}> Delete </button>
+  <button onClick={()=>{handleEdit(item._id, item.title, item.description)
+    setOpenDropdown(null)
+  }} className="flex items-center text-sm gap-4"> 
+    
+    <CiEdit fontSize={24}/>
+     Edit</button>
+  <button onClick={()=>handleDelete(item._id)} className="flex items-center text-sm gap-4"> 
+    
+    <CiTrash fontSize={24}/>
+    Delete </button>
           </div>
+              )
+            }
+            
             </div>
             </div>
          <label htmlFor="desc"></label>
